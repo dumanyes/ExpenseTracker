@@ -1,8 +1,15 @@
-from .views import RegistertrationView
+
 from django.urls import path
 
+from authentication import views
 
 urlpatterns = [
 
-    path('register', RegistertrationView.as_view(), name='register')
+
+    path('signup/', views.SignupPage, name='signup'),
+    path('login/', views.LoginPage, name='login'),
+    path('index/', views.HomePage, name='index'),
+    path('logout/', views.LogoutPage, name='logout'),
+
+
 ]

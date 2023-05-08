@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <!-- Design by foolishdeveloper.com -->
-    <title>Login Page</title>
- 
+    <title>Signup Page</title>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
@@ -41,17 +41,18 @@ body{
     left: -80px;
     top: -80px;
 }
-.shape:last-child{
+.shape:last-child {
     background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
+            to right,
+            #ff512f,
+            #f09819
     );
     right: -30px;
     bottom: -80px;
 }
+
 form{
-    height: 580px;
+    height: 700px;
     width: 500px;
     background-color: rgba(255,255,255,0.13);
     position: absolute;
@@ -86,20 +87,20 @@ label{
 }
 input{
     display: block;
-    height: 50px;
+    height: 40px;
     width: 100%;
     background-color: rgba(255,255,255,0.07);
     border-radius: 3px;
     padding: 0 10px;
-    margin-top: 8px;
+    margin-top: 2px;
     font-size: 14px;
     font-weight: 300;
 }
 ::placeholder{
     color: #e5e5e5;
 }
-button{
-    margin-top: 50px;
+.buttonb{
+    margin-top: 14px;
     width: 100%;
     background-color: #ffffff;
     color: #080710;
@@ -133,7 +134,8 @@ button{
 }
 .ialredy{
     cursor: pointer;
-    margin-top: 30px;
+    margin-top: 10px;
+
 }
 a{
     text-decoration: none;
@@ -148,10 +150,19 @@ a{
     color: #f0ad4e;
 }
 .just{
+
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+
 
 }
+
+
+
+
+
+
+
 
     </style>
 </head>
@@ -160,9 +171,17 @@ a{
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form action="{% url 'login' %}" method="post">
-        <h3 class="tcol">Login</h3>
+
+
+
+
+
+
+    <form action="{% url 'signup' %}" method="post">
         {% csrf_token %}
+        <div>
+            <h3 class="tcol">Sign Up</h3>
+        </div>
         <div class="warn just">
             {% for msg in messages %}
                 <div class="alert-warning" role="alert">
@@ -171,20 +190,27 @@ a{
 
             {% endfor %}
         </div>
+
+
+
         <label for="username" class="tcol">Username</label>
-        <input type="text"  class="tcol" placeholder="Enter Username" id="username" name="username" required>
+        <input type="text" placeholder="Username" name="username" id="username" class="tcol" required>
 
-        <label for="password" class="tcol">Password</label>
-        <input type="password"  class="tcol" placeholder="Password" id="password" name="pass" required>
+        <label for="email" class="tcol">Email</label>
+        <input type="email" placeholder="Email or Phone" name="email" id="email" class="tcol" required>
 
-        <button type="submit">Log In</button>
-        <!-- <input type="button" value=""> -->
-        <!-- <div class="social">
-          <div class="go"><i class="fab fa-google"></i>  Google</div>
-          <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
-        </div> -->
+        <label for="password1" class="tcol">Password</label>
+        <input type="password" placeholder="Password" id="password1" name="password1" class="tcol" required>
+
+
+        <label for="password2" class="tcol">Confrirm Password</label>
+        <input type="password" placeholder="Confrom Password" id="password2" name="password2" class="tcol" required>
+        <button type="submit" class="buttonb">Signup</button>
+
         <div class="ialredy">
-            <div class="just">  <a href="{% url 'signup' %}" >Create a account</a></div>
+
+            <div class="just"> <a href="{% url 'login' %}" class="ialredy" >I have already account</a></div>
+
 
         </div>
 
