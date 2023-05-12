@@ -1,3 +1,6 @@
+import datetime
+
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -89,6 +92,44 @@ def delete_income(request, id):
      income.delete()
      messages.success(request, 'Record removed')
      return redirect('income')
+
+
+def stats_view(request):
+    return render(request, 'income/income-stats.html')
+
+
+
+
+
+
+
+
+
+def income_category_summary_day(request):
+    todays_date = datetime.date.today()
+    one_year_ago = todays_date - datetime.timedelta(days=1)  # Consider expenses from the last 365 days
+    incomes = UserIncome.objects.filter(owner=request.user,
+                                      date__gte=one_year_ago, date__lte=todays_date)
+    finalrep = {}
+
+    def get_category(userincome):
+        return userincome.source
+
+    category_list = list(set(map(get_category, incomes)))
+
+    def get_income_category_amount(source):
+        amount = 0
+        filtered_by_category = incomes.filter(source=source)
+
+        for item in filtered_by_category:
+            amount += item.amount
+        return amount
+
+    for x in incomes:
+        for y in category_list:
+            finalrep[y] = get_income_category_amount(y)
+
+    return JsonResponse({'income_category_data': finalrep}, safe=False)
 
 
 

@@ -9,7 +9,7 @@ import datetime
 import csv
 
 # Create your views here.
-@login_required(login_url='authentication/login')
+# @login_required(login_url='/login')
 def index(request):
      categories = Category.objects.all()
      expenses = Expense.objects.filter(owner=request.user)
@@ -90,6 +90,22 @@ def delete_expense(request, id):
      return redirect('expenses')
 
 
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition']='attachment; filename=Expenses'+str(datetime.datetime.now())+'.csv'
+
+    writer=csv.writer(response)
+    writer.writerow(['Amount', 'Description', 'Category', 'Date'])
+
+    expenses = Expense.objects.filter(owner=request.user)
+    for expense in expenses:
+        writer.writerow([expense.amount, expense.description, expense.category, expense.date])
+
+    return response
+
+
+
+
 
 def expense_category_summary(request):
     todays_date = datetime.date.today()
@@ -117,20 +133,102 @@ def expense_category_summary(request):
     return JsonResponse({'expense_category_data': finalrep}, safe=False)
 
 
+
+
+
+
+
+
+def expense_category_summary_year(request):
+    todays_date = datetime.date.today()
+    one_year_ago = todays_date - datetime.timedelta(days=365)  # Consider expenses from the last 365 days
+    expenses = Expense.objects.filter(owner=request.user,
+                                      date__gte=one_year_ago, date__lte=todays_date)
+    finalrep = {}
+
+    def get_category(expense):
+        return expense.category
+
+    category_list = list(set(map(get_category, expenses)))
+
+    def get_expense_category_amount(category):
+        amount = 0
+        filtered_by_category = expenses.filter(category=category)
+
+        for item in filtered_by_category:
+            amount += item.amount
+        return amount
+
+    for x in expenses:
+        for y in category_list:
+            finalrep[y] = get_expense_category_amount(y)
+
+    return JsonResponse({'expense_category_data': finalrep}, safe=False)
+
+
+def expense_category_summary_month(request):
+    todays_date = datetime.date.today()
+    one_year_ago = todays_date - datetime.timedelta(days=30)  # Consider expenses from the last 365 days
+    expenses = Expense.objects.filter(owner=request.user,
+                                      date__gte=one_year_ago, date__lte=todays_date)
+    finalrep = {}
+
+    def get_category(expense):
+        return expense.category
+
+    category_list = list(set(map(get_category, expenses)))
+
+    def get_expense_category_amount(category):
+        amount = 0
+        filtered_by_category = expenses.filter(category=category)
+
+        for item in filtered_by_category:
+            amount += item.amount
+        return amount
+
+    for x in expenses:
+        for y in category_list:
+            finalrep[y] = get_expense_category_amount(y)
+
+    return JsonResponse({'expense_category_data': finalrep}, safe=False)
+
+
+def expense_category_summary_day(request):
+    todays_date = datetime.date.today()
+    one_year_ago = todays_date - datetime.timedelta(days=1)  # Consider expenses from the last 365 days
+    expenses = Expense.objects.filter(owner=request.user,
+                                      date__gte=one_year_ago, date__lte=todays_date)
+    finalrep = {}
+
+    def get_category(expense):
+        return expense.category
+
+    category_list = list(set(map(get_category, expenses)))
+
+    def get_expense_category_amount(category):
+        amount = 0
+        filtered_by_category = expenses.filter(category=category)
+
+        for item in filtered_by_category:
+            amount += item.amount
+        return amount
+
+    for x in expenses:
+        for y in category_list:
+            finalrep[y] = get_expense_category_amount(y)
+
+    return JsonResponse({'expense_category_data': finalrep}, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
 def stats_view(request):
-    return render(request, 'exp/stats.html')
-
-
-def export_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition']='attachment; filename=Expenses'+str(datetime.datetime.now())+'.csv'
-
-    writer=csv.writer(response)
-    writer.writerow(['Amount', 'Description', 'Category', 'Date'])
-
-    expenses = Expense.objects.filter(owner=request.user)
-    for expense in expenses:
-        writer.writerow([expense.amount, expense.description, expense.category, expense.date])
-
-    return response
-
+    return render(request, 'exp/expense-stats.html')

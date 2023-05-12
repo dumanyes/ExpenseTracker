@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Incomes Summary</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Summary
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="col-md-2">
+      <a href="" class="btn btn-primary">BACK</a>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <canvas id="myChart5" width="400" height="400"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="myChart6" width="400" height="400"></canvas>
+    </div>
+  </div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+      <canvas id="myChart7" width="400" height="400"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="myChart8" width="400" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/stats-income.js' %}"></script>
+<script src="{% static 'js/stats-income2.js' %}"></script>
+    <script src="{% static 'js/stats-income3.js' %}"></script>
+    <script src="{% static 'js/stats-income4.js' %}"></script>
+{% endblock content %}
